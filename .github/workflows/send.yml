@@ -1,0 +1,22 @@
+name: CRON RUN
+on:
+  schedule:
+    -cron: '0 0 * * *'
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '12.10.x'
+    - name: Install dependencies
+      run: npm i install
+    - uses: actions/setup-node@v1
+    - name: Build project
+      run: tsc
+    - name: Run code
+      run: node ./lib/index.js
+      env:
+        TOKEN: ${{ secrets.TOKEN }}
