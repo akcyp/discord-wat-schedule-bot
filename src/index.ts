@@ -34,6 +34,14 @@ function getTodayPlan (excepted: string) {
   });
 }
 
+function formatNumber(n: number) {
+  const str = n.toString();
+  return str.length > 1 ? str : '0' + str;
+}
+
+// Set default timezone
+process.env.TZ = 'Europe/Warsaw';
+
 const client = new Discord.Client();
 client.on('ready', async () => {
   console.log(`Logged in as ${client.user!.tag}!`);
@@ -54,7 +62,10 @@ client.on('ready', async () => {
       for (let i = 1; i <= 7; i++) {
         const lesson = lessons.find(l => l.block_id === i);
         const [ startTime, endTime ] = dateMapper[i - 1];
-        embed.addField(`${i}. ${startTime[0]}:${startTime[1]} - ${endTime[0]}:${endTime[1]}`, lesson ? lesson.details : '-');
+        embed.addField(
+          `${i}. ${formatNumber(startTime[0])}:${formatNumber(startTime[1])} - ${formatNumber(endTime[0])}:${formatNumber(endTime[1])}`,
+          lesson ? lesson.details : '-'
+        );
       }
       textChannel.send(embed);
     }
