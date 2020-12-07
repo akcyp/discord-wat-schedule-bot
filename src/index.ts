@@ -49,6 +49,7 @@ client.on('ready', async () => {
     if (channel.type === 'text') {
       const textChannel = channel as Discord.TextChannel;
       if (!textChannel.name.startsWith('wat-plan-')) continue;
+      textChannel.bulkDelete(1);
       const group = textChannel.name.replace('wat-plan-', '').toUpperCase();
       const lessons = await getTodayPlan(group);
       if (!lessons.length) continue;
