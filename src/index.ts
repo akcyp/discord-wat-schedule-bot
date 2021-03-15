@@ -52,6 +52,7 @@ client.on('ready', async () => {
       textChannel.bulkDelete(1);
       const group = textChannel.name.replace('wat-plan-', '').toUpperCase();
       const requestedDate = new Date();
+      requestedDate.setDate(requestedDate.getDate() + 1); // tomorrow
       const lessons = await getPlan(group, requestedDate);
       if (!lessons.length) continue;
 
