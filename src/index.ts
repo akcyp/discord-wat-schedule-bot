@@ -22,10 +22,10 @@ async function getPlans (excepted: string[]) {
   }));
 }
 
-function getTodayPlan (excepted: string) {
+function getPlan (excepted: string, date = new Date()) {
   return getPlans([excepted]).then(plans => {
-    const minimal = new Date();   minimal.setHours(0, 0, 0, 0);
-    const maximal = new Date();   maximal.setDate(maximal.getDate() + 1);
+    const minimal = date; minimal.setHours(0, 0, 0, 0);
+    const maximal = date; maximal.setDate(maximal.getDate() + 1);
     return plans.map(plan => plan.filter((lesson) => {
       return minimal < lesson.endTime && lesson.startTime < maximal;
     }));
@@ -51,12 +51,13 @@ client.on('ready', async () => {
       if (!textChannel.name.startsWith('wat-plan-')) continue;
       textChannel.bulkDelete(1);
       const group = textChannel.name.replace('wat-plan-', '').toUpperCase();
-      const lessons = await getTodayPlan(group);
+      const requestedDate = new Date();
+      const lessons = await getPlan(group, requestedDate);
       if (!lessons.length) continue;
 
       // Create pretty print message
       const embed = new Discord.MessageEmbed()
-        .setTitle(`Plan lekcji na dzień ${new Date().toLocaleDateString()}`)
+        .setTitle(`Plan lekcji na dzień ${requestedDate.toLocaleDateString()}`)
         .setColor(0xff0000)
         .setDescription(`Wygenerowne przez ${client.user!.tag}!`);
 
