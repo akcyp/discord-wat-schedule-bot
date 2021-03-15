@@ -24,8 +24,8 @@ async function getPlans (excepted: string[]) {
 
 function getPlan (excepted: string, date = new Date()) {
   return getPlans([excepted]).then(plans => {
-    const minimal = date; minimal.setHours(0, 0, 0, 0);
-    const maximal = date; maximal.setDate(maximal.getDate() + 1);
+    const minimal = new Date(date); minimal.setHours(0, 0, 0, 0);
+    const maximal = new Date(date); maximal.setDate(maximal.getDate() + 1);
     return plans.map(plan => plan.filter((lesson) => {
       return minimal < lesson.endTime && lesson.startTime < maximal;
     }));
