@@ -10,4 +10,4 @@
 
 ## How it works?
 
-Every morning, the bot checks the WAT schedule and displays a message on a special channel. If the day is free from classes, the bot deletes the previous message.
+Every evening, the bot checks the WAT schedule and displays a message on a special channel. If the day is free from classes, the bot deletes the previous message.
